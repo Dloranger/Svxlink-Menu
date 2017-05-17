@@ -359,7 +359,7 @@ fi
 fi
 
 if [[ $selected1 == Svxlink_K2_Basic ]] ; then
-if [[ $selected2 == k2]] ; then
+if [[ $selected2 == k2 ]] ; then
 #configure nanopi-k2 gpio
 	printf '%s\n' '/GPIO_IN_HIGH=/' "s/GPIO_IN_HIGH=.*/GPIO_IN_HIGH=\"\"/" w q | ex /etc/svxlink/svxlink_gpio.conf
 	printf '%s\n' '/GPIO_IN_LOW=/' "s/GPIO_IN_LOW=.*/GPIO_IN_LOW=\"236 247\"/" w q | ex /etc/svxlink/svxlink_gpio.conf
@@ -370,6 +370,7 @@ if [[ $selected2 == k2]] ; then
 	printf '%s\n' '/\[LinkRx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio231/" w q | ex /etc/svxlink/svxlink.conf
 	printf '%s\n' '/\[LinkTx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio/236" w q | ex /etc/svxlink/svxlink.conf
 	touch /etc/svxlink/.basic
+fi
 fi
 }
 
