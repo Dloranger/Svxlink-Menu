@@ -250,9 +250,6 @@ Config-GPIO() {
 	RESTART_SVXLINK_REQUIRED=1
 	WHIP_TITLE1='---------- Select Repeater Boards ----------'
 	OPTION1=$(whiptail --separate-output --title "$WHIP_TITLE1" --checklist "Make a Selection" --cancel-button "$TEXT_MENU_BACK" --backtitle "$WHIP_BACKTITLE" 15 65 10 \
-	"Svxlink_Advanced" "SvxLink Advanced board" off \
-	"Svxlink_Basic" "SvxLink Basic board" off \
-	"Svxlink_Extended" "SvxLink Entxended Board" off \
 	"Svxlink_Micro" "Svxlink Micro Repeater Interface" off \
 	3>&1 1>&2 2>&3 || : )
 	while read -r option1; do
@@ -267,8 +264,6 @@ Config-GPIO() {
 
 	WHIP_TITLE2='---------- Select Embedded Board ----------'
 	OPTION2=$(whiptail --separate-output --title "$WHIP_TITLE2" --checklist "Make a Selection" --cancel-button "$TEXT_MENU_BACK" --backtitle "$WHIP_BACKTITLE" 15 65 10 \
-	"rpi2" "Raspberry pi 2 32 bit cpu" off \
-	"rpi3" "Raspberry pi 3 64 bit cpu" off \
 	"neo" "neo H3 32 bit cpu" off \
 	"neo2" "neo2 H5 64 bit cpu" off \
 	3>&1 1>&2 2>&3 || : )
@@ -282,80 +277,22 @@ Config-GPIO() {
     done <<< "$OPTION2"
 	selected2=${selected%}
 
-if [[ $selected1 == Svxlink_Advanced ]] ; then
-if [[ $selected2 == rpi2 ]] || [[ $selected == rpi3 ]] ; then
-	#configure pi gpio
-	printf '%s\n' '/GPIO_IN_HIGH=/' "s/GPIO_IN_HIGH=.*/GPIO_IN_HIGH=\"5 6 7 13 24 25 26 27\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_IN_LOW=/' "s/GPIO_IN_LOW=.*/GPIO_IN_LOW=\"18 19\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_HIGH=/' "s/GPIO_OUT_HIGH=.*/GPIO_OUT_HIGH=\"12 16 17 20 21 22 23\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_LOW=/' "s/GPIO_OUT_LOW=.*/GPIO_OUT_LOW=\"\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/\[Rx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio19/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[Tx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio16/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkRx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio18/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkTx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio17/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/GPIO_RELAY_1=/' "s/GPIO_RELAY_1=.*/GPIO_RELAY_1=20/" w q | ex /etc/svxlink/svxlink.d/ModuleRemoteRelay.conf
-	printf '%s\n' '/GPIO_RELAY_2=/' "s/GPIO_RELAY_2=.*/GPIO_RELAY_2=21/" w q | ex /etc/svxlink/svxlink.d/ModuleRemoteRelay.conf
-	printf '%s\n' '/GPIO_RELAY_3=/' "s/GPIO_RELAY_3=.*/GPIO_RELAY_3=22/" w q | ex /etc/svxlink/svxlink.d/ModuleRemoteRelay.conf
-	printf '%s\n' '/GPIO_RELAY_4=/' "s/GPIO_RELAY_4=.*/GPIO_RELAY_4=23/" w q | ex /etc/svxlink/svxlink.d/ModuleRemoteRelay.conf
-	touch /etc/svxlink/.extended
-fi
-fi
-
-if [[ $selected1 == Svxlink_Basic ]] ; then
-if [[ $selected2 == rpi2 ]] || [[ $selected == rpi3 ]] ; then
-	#configure pi gpio
-	printf '%s\n' '/GPIO_IN_HIGH=/' "s/GPIO_IN_HIGH=.*/GPIO_IN_HIGH=\"7 24\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_IN_LOW=/' "s/GPIO_IN_LOW=.*/GPIO_IN_LOW=\"19 25\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_HIGH=/' "s/GPIO_OUT_HIGH=.*/GPIO_OUT_HIGH=\"17 23\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_LOW=/' "s/GPIO_OUT_LOW=.*/GPIO_OUT_LOW=\"\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/\[Rx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio19/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[Tx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio16/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkRx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio25/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkTx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio17/" w q | ex /etc/svxlink/svxlink.conf
-	touch /etc/svxlink/.basic
-fi
-fi
-
-if [[ $selected1 == Svxlink_Basic_Exp ]] ; then
-if [[ $selected2 == rpi2 ]] || [[ $selected == rpi3 ]] ; then
-#configure pi gpio
-	printf '%s\n' '/GPIO_IN_HIGH=/' "s/GPIO_IN_HIGH=.*/GPIO_IN_HIGH=\"7 24\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_IN_LOW=/' "s/GPIO_IN_LOW=.*/GPIO_IN_LOW=\"19 25\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_HIGH=/' "s/GPIO_OUT_HIGH=.*/GPIO_OUT_HIGH=\"17 23\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_LOW=/' "s/GPIO_OUT_LOW=.*/GPIO_OUT_LOW=\"\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/\[Rx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio19/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[Tx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio16/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkRx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio25/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkTx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio17/" w q | ex /etc/svxlink/svxlink.conf
-	touch /etc/svxlink/.basic
-fi
-fi
-
 if [[ $selected1 == Svxlink_Micro ]] ; then
-if [[ $selected2 == neo ]] ; then
+if [[ $selected2 == [ neo | neo2 ] ]] ; then
 	#configure nanopi-neo gpio
 	printf '%s\n' '/GPIO_IN_HIGH=/' "s/GPIO_IN_HIGH=.*/GPIO_IN_HIGH=\"\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_IN_LOW=/' "s/GPIO_IN_LOW=.*/GPIO_IN_LOW=\"236 247\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_HIGH=/' "s/GPIO_OUT_HIGH=.*/GPIO_OUT_HIGH=\"231 238\"/" w q | ex /etc/svxlink/gpio.conf
+	printf '%s\n' '/GPIO_IN_LOW=/' "s/GPIO_IN_LOW=.*/GPIO_IN_LOW=\"gpio0 gpio2\"/" w q | ex /etc/svxlink/gpio.conf
+	printf '%s\n' '/GPIO_OUT_HIGH=/' "s/GPIO_OUT_HIGH=.*/GPIO_OUT_HIGH=\"gpio3 gpio67\"/" w q | ex /etc/svxlink/gpio.conf
 	printf '%s\n' '/GPIO_OUT_LOW=/' "s/GPIO_OUT_LOW=.*/GPIO_OUT_LOW=\"\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/\[Rx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio238/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[Tx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio247/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkRx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio231/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkTx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio/236" w q | ex /etc/svxlink/svxlink.conf
+	printf '%s\n' '/\[Rx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio3/" w q | ex /etc/svxlink/svxlink.conf
+	printf '%s\n' '/\[Tx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio0/" w q | ex /etc/svxlink/svxlink.conf
+	printf '%s\n' '/\[LinkRx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio67/" w q | ex /etc/svxlink/svxlink.conf
+	printf '%s\n' '/\[LinkTx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio2/" w q | ex /etc/svxlink/svxlink.conf
 	touch /etc/svxlink/.basic
 fi
 
 if [[ $selected2 == neo2 ]] ; then
-	#configure nanopi-neo gpio
-	printf '%s\n' '/GPIO_IN_HIGH=/' "s/GPIO_IN_HIGH=.*/GPIO_IN_HIGH=\"\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_IN_LOW=/' "s/GPIO_IN_LOW=.*/GPIO_IN_LOW=\"236 247\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_HIGH=/' "s/GPIO_OUT_HIGH=.*/GPIO_OUT_HIGH=\"231 238\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/GPIO_OUT_LOW=/' "s/GPIO_OUT_LOW=.*/GPIO_OUT_LOW=\"\"/" w q | ex /etc/svxlink/gpio.conf
-	printf '%s\n' '/\[Rx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio238/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[Tx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio247/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkRx1\]/' '/GPIO_SQL_PIN=gpio/' "s/GPIO_SQL_PIN=gpio.*/GPIO_SQL_PIN=gpio231/" w q | ex /etc/svxlink/svxlink.conf
-	printf '%s\n' '/\[LinkTx1\]/' '/PTT_PIN=gpio/' "s/PTT_PIN=gpio.*/PTT_PIN=gpio/236" w q | ex /etc/svxlink/svxlink.conf
-	touch /etc/svxlink/.basic
+
 fi
 fi
 }
@@ -934,7 +871,7 @@ first_run() {
 whiptail --msgbox "\
                           Welcome to Svxlink
 
-                Amature Radio Repeater Interface System 
+                  OTG Repeater Configuration Menu 
 
  Upon First Run of this script you will be asked to enter information,
 
